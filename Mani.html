@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HealthCodePro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            max-width: 90%;
+            margin-bottom: 20px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            background-color: #5cb85c;
+            color: white;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            opacity: 0.8;
+        }
+        .form-switch {
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+        }
+        .form-switch a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .form-switch a:hover {
+            text-decoration: underline;
+        }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .main-content {
+            display: none;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 1000px;
+            margin: 20px auto;
+        }
+        header {
+            background-color: #f0f0f0;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 {
+            margin: 0;
+        }
+        .logout-button {
+            background-color: #d9534f;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+        }
+        .logout-button:hover {
+            background-color: #c9302c;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav li {
+            display: inline;
+            margin-right: 20px;
+        }
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .accordion {
+            background-color: #eee;
+            color: #444;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            transition: 0.4s;
+        }
+        .active, .accordion:hover {
+            background-color: #ccc;
+        }
+        .accordion:after {
+            content: '\002B';
+            color: #777;
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+        }
+        .active:after {
+            content: "\2212";
+        }
+        .panel {
+            padding: 0 18px;
+            background-color: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+        }
+        .search-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .search-box {
+            width: 100%;
+            max-width: 1000px;
+            padding: 24px;
+            font-size: 28px;
+            border: 3px solid #4d94ff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+        .search-box:focus {
+            border-color: #80b3ff;
+            outline: none;
+        }
+        .results-container {
+            margin-top: 20px;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .system-section {
+            margin-bottom: 20px;
+        }
+        .system-section h3 {
+            color: #333;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .code {
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #f0f0f0;
+            transition: background-color 0.3s ease;
+        }
+        .code:hover {
+            background-color: #d3e7ff;
+        }
+        .subcodes {
+            display: none;
+            margin-left: 20px;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .primary-code {
+            background-color: #80b3ff;
+            color: white;
+        }
+        .primary-code:hover {
+            background-color: #4d94ff;
+        }
+        .icd10-container {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .search-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .clear-search {
+            background-color: #d9534f;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 10px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-size: 12px;
+            width: 60px;
+        }
+        .clear-search:hover {
+            background-color: #c9302c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="login-signup-container">
+        <div id="login-form">
+            <h2>Login</h2>
+            <label for="login-username">Username:</label>
+            <input type="text" id="login-username" name="login-username" required>
+
+            <label for="login-password">Password:</label>
+            <input type="password" id="login-password" name="login-password" required>
+
+            <button type="button" onclick="login()">Login</button>
+
+            <div class="form-switch">
+                Don't have an account? <a href="#" onclick="showSignUp()">Sign Up</a>
+            </div>
+            <div id="login-error" class="error-message"></div>
+        </div>
+
+        <div id="signup-form" style="display: none;">
+            <h2>Sign Up</h2>
+            <label for="signup-username">Username:</label>
+            <input type="text" id="signup-username" name="signup-username" required>
+
+            <label for="signup-password">Password:</label>
+            <input type="password" id="signup-password" name="signup-password" required>
+
+            <label for="verify-password">Verify Password:</label>
+            <input type="password" id="verify-password" name="verify-password" required>
+
+            <button type="button" onclick="signUp()">Sign Up</button>
+
+            <div class="form-switch">
+                Already have an account? <a href="#" onclick="showLogin()">Login</a>
+            </div>
+            <div id="signup-error" class="error-message"></div>
+        </div>
+    </div>
+
+    <div class="main-content" id="main-content">
+        <header>
+            <h1>HealthCodePro</h1>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <section>
+                <h2>Welcome</h2>
+                <div class="search-container">
+                    <div class="search-wrapper">
+                        <input class="search-box" type="text" id="search" placeholder="Search ICD-10 CM, HCPCS, CPT, ICD-10 PCS codes..." onkeyup="searchAllCodes()" />
+                        <button class="clear-search" onclick="clearMainSearch()">Clear</button>
+                    </div>
+                </div>
+                <div class="results-container" id="search-results"></div>
+            </section>
+            <button class="accordion">ICD-10 CM</button>
+            <div class="panel">
+                <div class="icd10-container">
+                    <div class="search-wrapper">
+                        <input class="search-box" type="text" id="icd10-search" placeholder="Search ICD-10 code or description" onkeyup="searchCodes()" onblur="handleSearchBlur()" />
+                        <button class="clear-search" onclick="clearSearch()">Clear</button>
+                    </div>
+                    <div id="codes-container"></div>
+                </div>
+            </div>
+            <button class="accordion">CPT</button>
+            <div class="panel">
+                <div class="icd10-container">
+                    <div class="search-wrapper">
+                        <input class="search-box" type="text" id="cpt-search" placeholder="Search CPT code or description" onkeyup="searchCPTCodes()" onblur="handleCPTSearchBlur()" />
+                        <button class="clear-search" onclick="clearCPTSearch()">Clear</button>
+                    </div>
+                    <div id="cpt-codes-container"></div>
+                </div>
+            </div>
+            <button class="accordion">HCPCS</button>
+            <div class="panel">
+                <div class="icd10-container">
+                    <div class="search-wrapper">
+                        <input class="search-box" type="text" id="hcpcs-search" placeholder="Search HCPCS code or description" onkeyup="searchHCPCSCodes()" onblur="handleHCPCSSearchBlur()" />
+                        <button class="clear-search" onclick="clearHCPCSSearch()">Clear</button>
+                    </div>
+                    <div id="hcpcs-codes-container"></div>
+                </div>
+            </div>
+            <button class="accordion">ICD 10 PCS</button>
+            <div class="panel">
+                <div class="icd10-container">
+                    <div class="search-wrapper">
+                        <input class="search-box" type="text" id="icd10pcs-search" placeholder="Search ICD-10-PCS code or description" onkeyup="searchICD10PCSCodes()" onblur="handleICD10PCSSearchBlur()" />
+                        <button class="clear-search" onclick="clearICD10PCSSearch()">Clear</button>
+                    </div>
+                    <div id="icd10pcs-codes-container"></div>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <button class="logout-button" onclick="logout()">Logout</button>
+            <p>© 2025 HealthCodePro</p>
+        </footer>
+    </div>
+
+    <script>
+        const loginSignupContainer = document.getElementById('login-signup-container');
+        const mainContent = document.getElementById('main-content');
+        const loginErrorDiv = document.getElementById('login-error');
+        const signupErrorDiv = document.getElementById('signup-error');
+
+        function showSignUp() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('signup-form').style.display = 'block';
+            loginErrorDiv.textContent = '';
+        }
+
+        function showLogin() {
+            document.getElementById('signup-form').style.display = 'none';
+            document.getElementById('login-form').style.display = 'block';
+            signupErrorDiv.textContent = '';
+        }
+
+        function signUp() {
+            const username = document.getElementById('signup-username').value;
+            const password = document.getElementById('signup-password').value;
+            const verifyPassword = document.getElementById('verify-password').value;
+
+            if (!username || !password || !verifyPassword) {
+                signupErrorDiv.textContent = "Please fill in all fields.";
+                return;
+            }
+
+            if (password !== verifyPassword) {
+                signupErrorDiv.textContent = "Passwords do not match.";
+                return;
+            }
+
+            if (localStorage.getItem(username)) {
+                signupErrorDiv.textContent = "Username already exists.";
+                return;
+            }
+
+            localStorage.setItem(username, password);
+            signupErrorDiv.textContent = "Sign up successful! Please log in.";
+            showLogin();
+        }
+
+        function login() {
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            const storedPassword = localStorage.getItem(username);
+
+            if (storedPassword && storedPassword === password) {
+                localStorage.setItem('loggedInUser', username);
+                loginSignupContainer.style.display = 'none';
+                mainContent.style.display = 'block';
+                loginErrorDiv.textContent = '';
+            } else {
+                loginErrorDiv.textContent = "Incorrect username or password.";
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('loggedInUser');
+            loginSignupContainer.style.display = 'flex';
+            mainContent.style.display = 'none';
+        }
+
+        window.onload = function() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            if (loggedInUser) {
+                const storedPassword = localStorage.getItem(loggedInUser);
+                if (storedPassword) {
+                    loginSignupContainer.style.display = 'none';
+                    mainContent.style.display = 'block';
+                } else {
+                    localStorage.removeItem('loggedInUser');
+                    loginSignupContainer.style.display = 'flex';
+                    mainContent.style.display = 'none';
+                }
+            } else {
+                loginSignupContainer.style.display = 'flex';
+                mainContent.style.display = 'none';
+            }
+        };
+
+        var acc = document.getElementsByClassName("accordion");
+        for (var i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            });
+        }
+
+        const codeData = {
+            "ICD-10 CM": {
+                "A00": {
+                    description: "Cholera",
+                    subcodes: [
+                        { code: "A00.0", description: "Cholera due to Vibrio cholerae 01, biovar cholerae" },
+                        { code: "A00.1", description: "Cholera due to Vibrio cholerae 01, biovar eltor" },
+                        { code: "A00.9", description: "Cholera, unspecified" }
+                    ]
+                },
+                "A15": {
+                    description: "Tuberculosis of lung",
+                    subcodes: [
+                        { code: "A15.0", description: "Tuberculosis of lung, confirmed by sputum microscopy" },
+                        { code: "A15.7", description: "Primary respiratory tuberculosis" },
+                        { code: "A15.9", description: "Respiratory tuberculosis unspecified" }
+                    ]
+                },
+                "B20": {
+                    description: "Human immunodeficiency virus [HIV] disease",
+                    subcodes: [
+                        { code: "B20.0", description: "HIV disease resulting in mycobacterial infection" },
+                        { code: "B20.1", description: "HIV disease resulting in other bacterial infections" },
+                        { code: "B20.9", description: "HIV disease resulting in unspecified infectious or parasitic disease" }
+                    ]
+                },
+                "C34": {
+                    description: "Malignant neoplasm of bronchus and lung",
+                    subcodes: [
+                        { code: "C34.0", description: "Malignant neoplasm of main bronchus" },
+                        { code: "C34.1", description: "Malignant neoplasm of upper lobe, bronchus or lung" },
+                        { code: "C34.9", description: "Malignant neoplasm of bronchus or lung, unspecified" }
+                    ]
+                },
+                "D50": {
+                    description: "Iron deficiency anemia",
+                    subcodes: [
+                        { code: "D50.0", description: "Iron deficiency anemia secondary to blood loss (chronic)" },
+                        { code: "D50.8", description: "Other iron deficiency anemias" },
+                        { code: "D50.9", description: "Iron deficiency anemia, unspecified" }
+                    ]
+                },
+                "E11": {
+                    description: "Type 2 diabetes mellitus",
+                    subcodes: [
+                        { code: "E11.0", description: "Type 2 diabetes mellitus with hyperosmolarity" },
+                        { code: "E11.2", description: "Type 2 diabetes mellitus with kidney complications" },
+                        { code: "E11.9", description: "Type 2 diabetes mellitus without complications" }
+                    ]
+                },
+                "E66": {
+                    description: "Overweight and obesity",
+                    subcodes: [
+                        { code: "E66.0", description: "Obesity due to excess calories" },
+                        { code: "E66.1", description: "Drug-induced obesity" },
+                        { code: "E66.9", description: "Obesity, unspecified" }
+                    ]
+                },
+                "F32": {
+                    description: "Major depressive disorder, single episode",
+                    subcodes: [
+                        { code: "F32.0", description: "Major depressive disorder, single episode, mild" },
+                        { code: "F32.1", description: "Major depressive disorder, single episode, moderate" },
+                        { code: "F32.9", description: "Major depressive disorder, single episode, unspecified" }
+                    ]
+                },
+                "F41": {
+                    description: "Other anxiety disorders",
+                    subcodes: [
+                        { code: "F41.0", description: "Panic disorder [episodic paroxysmal anxiety]" },
+                        { code: "F41.1", description: "Generalized anxiety disorder" },
+                        { code: "F41.9", description: "Anxiety disorder, unspecified" }
+                    ]
+                },
+                "I10": {
+                    description: "Essential (primary) hypertension",
+                    subcodes: [
+                        { code: "I10", description: "Essential (primary) hypertension" }
+                    ]
+                },
+                "I21": {
+                    description: "Acute myocardial infarction",
+                    subcodes: [
+                        { code: "I21.0", description: "ST elevation (STEMI) myocardial infarction of anterior wall" },
+                        { code: "I21.1", description: "ST elevation (STEMI) myocardial infarction of inferior wall" },
+                        { code: "I21.9", description: "Acute myocardial infarction, unspecified" }
+                    ]
+                },
+                "J45": {
+                    description: "Asthma",
+                    subcodes: [
+                        { code: "J45.2", description: "Mild intermittent asthma" },
+                        { code: "J45.3", description: "Mild persistent asthma" },
+                        { code: "J45.9", description: "Asthma, unspecified" }
+                    ]
+                },
+                "J96": {
+                    description: "Respiratory failure, not elsewhere classified",
+                    subcodes: [
+                        { code: "J96.0", description: "Acute respiratory failure" },
+                        { code: "J96.1", description: "Chronic respiratory failure" },
+                        { code: "J96.9", description: "Respiratory failure, unspecified" }
+                    ]
+                },
+                "K21": {
+                    description: "Gastro-esophageal reflux disease",
+                    subcodes: [
+                        { code: "K21.0", description: "Gastro-esophageal reflux disease with esophagitis" },
+                        { code: "K21.9", description: "Gastro-esophageal reflux disease without esophagitis" }
+                    ]
+                },
+                "K52": {
+                    description: "Other noninfective gastroenteritis and colitis",
+                    subcodes: [
+                        { code: "K52.0", description: "Gastroenteritis and colitis due to radiation" },
+                        { code: "K52.1", description: "Toxic gastroenteritis and colitis" },
+                        { code: "K52.9", description: "Noninfective gastroenteritis and colitis, unspecified" }
+                    ]
+                },
+                "L30": {
+                    description: "Other and unspecified dermatitis",
+                    subcodes: [
+                        { code: "L30.0", description: "Nummular dermatitis" },
+                        { code: "L30.1", description: "Dyshidrosis [pompholyx]" },
+                        { code: "L30.9", description: "Dermatitis, unspecified" }
+                    ]
+                },
+                "M54": {
+                    description: "Dorsalgia",
+                    subcodes: [
+                        { code: "M54.2", description: "Cervicalgia" },
+                        { code: "M54.5", description: "Low back pain" },
+                        { code: "M54.9", description: "Dorsalgia, unspecified" }
+                    ]
+                },
+                "M79": {
+                    description: "Other and unspecified soft tissue disorders, not elsewhere classified",
+                    subcodes: [
+                        { code: "M79.0", description: "Rheumatism, unspecified" },
+                        { code: "M79.1", description: "Myalgia" },
+                        { code: "M79.7", description: "Fibromyalgia" }
+                    ]
+                },
+                "N39": {
+                    description: "Other disorders of urinary system",
+                    subcodes: [
+                        { code: "N39.0", description: "Urinary tract infection, site not specified" },
+                        { code: "N39.3", description: "Stress incontinence (female) (male)" },
+                        { code: "N39.9", description: "Disorder of urinary system, unspecified" }
+                    ]
+                },
+                "N97": {
+                    description: "Female infertility",
+                    subcodes: [
+                        { code: "N97.0", description: "Female infertility associated with anovulation" },
+                        { code: "N97.1", description: "Female infertility of tubal origin" },
+                        { code: "N97.9", description: "Female infertility, unspecified" }
+                    ]
+                },
+                "O80": {
+                    description: "Encounter for full-term uncomplicated delivery",
+                    subcodes: [
+                        { code: "O80", description: "Encounter for full-term uncomplicated delivery" }
+                    ]
+                },
+                "O82": {
+                    description: "Encounter for cesarean delivery without indication",
+                    subcodes: [
+                        { code: "O82", description: "Encounter for cesarean delivery without indication" }
+                    ]
+                },
+                "O99": {
+                    description: "Other maternal diseases classifiable elsewhere but complicating pregnancy, childbirth and the puerperium",
+                    subcodes: [
+                        { code: "O99.0", description: "Anemia complicating pregnancy, childbirth and the puerperium" },
+                        { code: "O99.2", description: "Endocrine, nutritional and metabolic diseases complicating pregnancy, childbirth and the puerperium" },
+                        { code: "O99.8", description: "Other specified diseases and conditions complicating pregnancy, childbirth and the puerperium" }
+                    ]
+                },
+                "P07": {
+                    description: "Disorders related to short gestation and low birth weight, not elsewhere classified",
+                    subcodes: [
+                        { code: "P07.0", description: "Extremely low birth weight" },
+                        { code: "P07.1", description: "Other low birth weight" },
+                        { code: "P07.3", description: "Preterm [premature] newborn" }
+                    ]
+                },
+                "P28": {
+                    description: "Other respiratory conditions of newborn",
+                    subcodes: [
+                        { code: "P28.0", description: "Primary atelectasis of newborn" },
+                        { code: "P28.5", description: "Respiratory failure of newborn" },
+                        { code: "P28.9", description: "Respiratory condition of newborn, unspecified" }
+                    ]
+                },
+                "Q21": {
+                    description: "Congenital malformations of cardiac septa",
+                    subcodes: [
+                        { code: "Q21.0", description: "Ventricular septal defect" },
+                        { code: "Q21.1", description: "Atrial septal defect" },
+                        { code: "Q21.9", description: "Congenital malformation of cardiac septum, unspecified" }
+                    ]
+                },
+                "Q90": {
+                    description: "Down syndrome",
+                    subcodes: [
+                        { code: "Q90.0", description: "Trisomy 21, nonmosaicism (meiotic nondisjunction)" },
+                        { code: "Q90.1", description: "Trisomy 21, mosaicism (mitotic nondisjunction)" },
+                        { code: "Q90.9", description: "Down syndrome, unspecified" }
+                    ]
+                },
+                "R07": {
+                    description: "Pain in throat and chest",
+                    subcodes: [
+                        { code: "R07.0", description: "Pain in throat" },
+                        { code: "R07.1", description: "Chest pain on breathing" },
+                        { code: "R07.9", description: "Chest pain, unspecified" }
+                    ]
+                },
+                "R53": {
+                    description: "Malaise and fatigue",
+                    subcodes: [
+                        { code: "R53.1", description: "Weakness" },
+                        { code: "R53.8", description: "Other malaise and fatigue" },
+                        { code: "R53.83", description: "Other fatigue" }
+                    ]
+                },
+                "S72": {
+                    description: "Fracture of femur",
+                    subcodes: [
+                        { code: "S72.0", description: "Fracture of head and neck of femur" },
+                        { code: "S72.1", description: "Pertrochanteric fracture" },
+                        { code: "S72.9", description: "Fracture of femur, unspecified" }
+                    ]
+                },
+                "T78": {
+                    description: "Adverse effects, not elsewhere classified",
+                    subcodes: [
+                        { code: "T78.0", description: "Anaphylactic shock due to adverse food reaction" },
+                        { code: "T78.2", description: "Anaphylactic shock, unspecified" },
+                        { code: "T78.4", description: "Allergy, unspecified" }
+                    ]
+                },
+                "V89": {
+                    description: "Motor- or nonmotor-vehicle accident, type of vehicle unspecified",
+                    subcodes: [
+                        { code: "V89.0", description: "Person injured in unspecified motor-vehicle accident, nontraffic" },
+                        { code: "V89.2", description: "Person injured in unspecified motor-vehicle accident, traffic" },
+                        { code: "V89.9", description: "Person injured in unspecified vehicle accident" }
+                    ]
+                },
+                "Y92": {
+                    description: "Place of occurrence of the external cause",
+                    subcodes: [
+                        { code: "Y92.0", description: "Home" },
+                        { code: "Y92.1", description: "Residential institution" },
+                        { code: "Y92.9", description: "Unspecified place" }
+                    ]
+                },
+                "Z00": {
+                    description: "Encounter for general examination without complaint, suspected or reported diagnosis",
+                    subcodes: [
+                        { code: "Z00.0", description: "General medical examination" },
+                        { code: "Z00.1", description: "Routine child health examination" },
+                        { code: "Z00.8", description: "Other general examinations" }
+                    ]
+                },
+                "Z71": {
+                    description: "Persons encountering health services for other counseling and medical advice, not elsewhere classified",
+                    subcodes: [
+                        { code: "Z71.0", description: "Person consulting on behalf of another person" },
+                        { code: "Z71.1", description: "Person with feared health complaint in whom no diagnosis is made" },
+                        { code: "Z71.9", description: "Counseling, unspecified" }
+                    ]
+                },
+                "U07": {
+                    description: "Emergency use of U07",
+                    subcodes: [
+                        { code: "U07.1", description: "COVID-19, virus identified" },
+                        { code: "U07.2", description: "COVID-19, virus not identified" }
+                    ]
+                },
+                "U82": {
+                    description: "Resistance to betalactam antibiotics",
+                    subcodes: [
+                        { code: "U82.0", description: "Resistance to penicillin" },
+                        { code: "U82.1", description: "Resistance to methicillin" },
+                        { code: "U82.9", description: "Resistance to betalactam antibiotics, unspecified" }
+                    ]
+                },
+                "A41": {
+                    description: "Other sepsis",
+                    subcodes: [
+                        { code: "A41.0", description: "Sepsis due to Staphylococcus aureus" },
+                        { code: "A41.5", description: "Sepsis due to other Gram-negative organisms" },
+                        { code: "A41.9", description: "Sepsis, unspecified organism" }
+                    ]
+                },
+                "B97": {
+                    description: "Viral agents as the cause of diseases classified elsewhere",
+                    subcodes: [
+                        { code: "B97.2", description: "Coronavirus as the cause of diseases classified elsewhere" },
+                        { code: "B97.4", description: "Respiratory syncytial virus as the cause of diseases classified elsewhere" },
+                        { code: "B97.8", description: "Other viral agents as the cause of diseases classified elsewhere" }
+                    ]
+                },
+                "C50": {
+                    description: "Malignant neoplasm of breast",
+                    subcodes: [
+                        { code: "C50.0", description: "Malignant neoplasm of nipple and areola" },
+                        { code: "C50.1", description: "Malignant neoplasm of central portion of breast" },
+                        { code: "C50.9", description: "Malignant neoplasm of breast, unspecified" }
+                    ]
+                },
+                "D25": {
+                    description: "Leiomyoma of uterus",
+                    subcodes: [
+                        { code: "D25.0", description: "Submucous leiomyoma of uterus" },
+                        { code: "D25.1", description: "Intramural leiomyoma of uterus" },
+                        { code: "D25.9", description: "Leiomyoma of uterus, unspecified" }
+                    ]
+                },
+                "E78": {
+                    description: "Disorders of lipoprotein metabolism and other lipidemias",
+                    subcodes: [
+                        { code: "E78.0", description: "Pure hypercholesterolemia" },
+                        { code: "E78.2", description: "Mixed hyperlipidemia" },
+                        { code: "E78.5", description: "Hyperlipidemia, unspecified" }
+                    ]
+                },
+                "G40": {
+                    description: "Epilepsy and recurrent seizures",
+                    subcodes: [
+                        { code: "G40.0", description: "Localization-related (focal) (partial) idiopathic epilepsy" },
+                        { code: "G40.1", description: "Localization-related (focal) (partial) symptomatic epilepsy" },
+                        { code: "G40.9", description: "Epilepsy, unspecified" }
+                    ]
+                },
+                "H25": {
+                    description: "Age-related cataract",
+                    subcodes: [
+                        { code: "H25.0", description: "Age-related incipient cataract" },
+                        { code: "H25.1", description: "Age-related nuclear cataract" },
+                        { code: "H25.9", description: "Age-related cataract, unspecified" }
+                    ]
+                },
+                "I50": {
+                    description: "Heart failure",
+                    subcodes: [
+                        { code: "I50.2", description: "Systolic (congestive) heart failure" },
+                        { code: "I50.3", description: "Diastolic (congestive) heart failure" },
+                        { code: "I50.9", description: "Heart failure, unspecified" }
+                    ]
+                },
+                "J30": {
+                    description: "Vasomotor and allergic rhinitis",
+                    subcodes: [
+                        { code: "J30.0", description: "Vasomotor rhinitis" },
+                        { code: "J30.1", description: "Allergic rhinitis due to pollen" },
+                        { code: "J30.9", description: "Allergic rhinitis, unspecified" }
+                    ]
+                },
+                "K80": {
+                    description: "Cholelithiasis",
+                    subcodes: [
+                        { code: "K80.0", description: "Calculus of gallbladder with acute cholecystitis" },
+                        { code: "K80.2", description: "Calculus of gallbladder without cholecystitis" },
+                        { code: "K80.8", description: "Other cholelithiasis" }
+                    ]
+                }
+            },
+            "HCPCS": {
+                "A4230": {
+                    description: "Infusion set for external insulin pump, non-needle cannula type",
+                    subcodes: []
+                },
+                "A4253": {
+                    description: "Blood glucose test or reagent strips for home blood glucose monitor, per 50 strips",
+                    subcodes: []
+                },
+                "A4351": {
+                    description: "Intermittent urinary catheter; straight tip, with or without coating, each",
+                    subcodes: []
+                },
+                "A5500": {
+                    description: "For diabetics only, fitting (including follow-up), custom preparation and supply of off-the-shelf depth-inlay shoe, per shoe",
+                    subcodes: []
+                },
+                "E0143": {
+                    description: "Walker, folding, wheeled, adjustable or fixed height",
+                    subcodes: []
+                },
+                "E0607": {
+                    description: "Home blood glucose monitor",
+                    subcodes: []
+                },
+                "E0784": {
+                    description: "External ambulatory infusion pump, insulin",
+                    subcodes: []
+                },
+                "E1399": {
+                    description: "Durable medical equipment, miscellaneous",
+                    subcodes: []
+                },
+                "G0108": {
+                    description: "Diabetes outpatient self-management training services, individual, per 30 minutes",
+                    subcodes: []
+                },
+                "G0283": {
+                    description: "Electrical stimulation (unattended), to one or more areas for indication(s) other than wound care",
+                    subcodes: []
+                },
+                "J0696": {
+                    description: "Injection, ceftriaxone sodium, per 250 mg",
+                    subcodes: []
+                },
+                "J1050": {
+                    description: "Injection, medroxyprogesterone acetate, 1 mg",
+                    subcodes: []
+                },
+                "J1100": {
+                    description: "Injection, dexamethasone sodium phosphate, 1 mg",
+                    subcodes: []
+                },
+                "J1885": {
+                    description: "Injection, ketorolac tromethamine, per 15 mg",
+                    subcodes: []
+                },
+                "J3420": {
+                    description: "Injection, vitamin B-12 cyanocobalamin, up to 1000 mcg",
+                    subcodes: []
+                },
+                "L1833": {
+                    description: "Knee orthosis, adjustable knee joints (unicentric or polycentric), positional orthosis",
+                    subcodes: []
+                },
+                "L8680": {
+                    description: "Implantable neurostimulator electrode, each",
+                    subcodes: []
+                },
+                "Q9967": {
+                    description: "Low osmolar contrast material, 300-399 mg/ml iodine concentration, per ml",
+                    subcodes: []
+                },
+                "S8030": {
+                    description: "Scleral application of tantalum ring(s) for localization of lesions for proton beam therapy",
+                    subcodes: []
+                },
+                "S9445": {
+                    description: "Patient education, not otherwise classified, non-physician provider, individual, per session",
+                    subcodes: []
+                },
+                "V2020": {
+                    description: "Frames, purchases",
+                    subcodes: []
+                },
+                "V2630": {
+                    description: "Anterior chamber intraocular lens",
+                    subcodes: []
+                }
+            },
+            "CPT": {
+                "00100": {
+                    description: "Anesthesia for procedures on salivary glands, including biopsy",
+                    subcodes: []
+                },
+                "00170": {
+                    description: "Anesthesia for intraoral procedures, including biopsy",
+                    subcodes: []
+                },
+                "10060": {
+                    description: "Incision and drainage of abscess (eg, carbuncle, suppurative hidradenitis, cutaneous or subcutaneous abscess)",
+                    subcodes: [
+                        { code: "10061", description: "Incision and drainage of abscess; complicated or multiple" }
+                    ]
+                },
+                "11100": {
+                    description: "Biopsy of skin, subcutaneous tissue and/or mucous membrane (including simple closure), unless otherwise listed; single lesion",
+                    subcodes: [
+                        { code: "11101", description: "Biopsy of skin; each separate/additional lesion" }
+                    ]
+                },
+                "17000": {
+                    description: "Destruction (eg, laser surgery, electrosurgery, cryosurgery, chemosurgery, surgical curettement), premalignant lesions (eg, actinic keratoses); first lesion",
+                    subcodes: [
+                        { code: "17003", description: "Destruction, premalignant lesions; second through 14 lesions, each" }
+                    ]
+                },
+                "20610": {
+                    description: "Arthrocentesis, aspiration and/or injection, major joint or bursa (eg, shoulder, hip, knee, subacromial bursa); without ultrasound guidance",
+                    subcodes: [
+                        { code: "20611", description: "Arthrocentesis, aspiration and/or injection, major joint or bursa; with ultrasound guidance" }
+                    ]
+                },
+                "29881": {
+                    description: "Arthroscopy, knee, surgical; with meniscectomy (medial OR lateral, including any meniscal shaving)",
+                    subcodes: [
+                        { code: "29882", description: "Arthroscopy, knee, surgical; with meniscus repair (medial OR lateral)" }
+                    ]
+                },
+                "33510": {
+                    description: "Coronary artery bypass, vein only; single coronary venous graft",
+                    subcodes: [
+                        { code: "33511", description: "Coronary artery bypass, vein only; two coronary venous grafts" }
+                    ]
+                },
+                "36415": {
+                    description: "Collection of venous blood by venipuncture",
+                    subcodes: []
+                },
+                "43235": {
+                    description: "Esophagogastroduodenoscopy, flexible, transoral; diagnostic, including collection of specimen(s) by brushing or washing, when performed",
+                    subcodes: [
+                        { code: "43239", description: "Esophagogastroduodenoscopy, flexible, transoral; with biopsy, single or multiple" }
+                    ]
+                },
+                "45378": {
+                    description: "Colonoscopy, flexible; diagnostic, including collection of specimen(s) by brushing or washing, when performed",
+                    subcodes: [
+                        { code: "45380", description: "Colonoscopy, flexible; with biopsy, single or multiple" }
+                    ]
+                },
+                "62263": {
+                    description: "Percutaneous lysis of epidural adhesions using solution injection (eg, hypertonic saline, enzyme) or mechanical means, including radiologic localization, multiple adhesiolysis sessions; 2 or more days",
+                    subcodes: []
+                },
+                "70450": {
+                    description: "Computed tomography, head or brain; without contrast material",
+                    subcodes: [
+                        { code: "70460", description: "Computed tomography, head or brain; with contrast material(s)" }
+                    ]
+                },
+                "72040": {
+                    description: "Radiologic examination, spine, cervical; 2 or 3 views",
+                    subcodes: [
+                        { code: "72050", description: "Radiologic examination, spine, cervical; 4 or 5 views" }
+                    ]
+                },
+                "76705": {
+                    description: "Ultrasound, abdominal, real time with image documentation; limited (eg, single organ, quadrant, follow-up)",
+                    subcodes: []
+                },
+                "80053": {
+                    description: "Comprehensive metabolic panel",
+                    subcodes: []
+                },
+                "81001": {
+                    description: "Urinalysis, by dip stick or tablet reagent for bilirubin, glucose, hemoglobin, ketones, leukocytes, nitrite, pH, protein, specific gravity, urobilinogen, any number of these constituents; automated, with microscopy",
+                    subcodes: []
+                },
+                "85025": {
+                    description: "Blood count; complete (CBC), automated (Hgb, Hct, RBC, WBC and platelet count) and automated differential WBC count",
+                    subcodes: []
+                },
+                "88305": {
+                    description: "Level IV - Surgical pathology, gross and microscopic examination",
+                    subcodes: []
+                },
+                "90471": {
+                    description: "Immunization administration (includes percutaneous, intradermal, subcutaneous, or intramuscular injections); 1 vaccine (single or combination vaccine/toxoid)",
+                    subcodes: [
+                        { code: "90472", description: "Immunization administration; each additional vaccine (single or combination vaccine/toxoid)" }
+                    ]
+                },
+                "90834": {
+                    description: "Psychotherapy, 45 minutes with patient",
+                    subcodes: [
+                        { code: "90837", description: "Psychotherapy, 60 minutes with patient" }
+                    ]
+                },
+                "92012": {
+                    description: "Ophthalmological services: medical examination and evaluation, with initiation or continuation of diagnostic and treatment program; intermediate, established patient",
+                    subcodes: [
+                        { code: "92014", description: "Ophthalmological services: medical examination and evaluation, with initiation or continuation of diagnostic and treatment program; comprehensive, established patient, 1 or more visits" }
+                    ]
+                },
+                "92507": {
+                    description: "Treatment of speech, language, voice, communication, and/or auditory processing disorder; individual",
+                    subcodes: []
+                },
+                "93000": {
+                    description: "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report",
+                    subcodes: [
+                        { code: "93010", description: "Electrocardiogram, routine ECG with at least 12 leads; interpretation and report only" }
+                    ]
+                },
+                "94640": {
+                    description: "Pressurized or nonpressurized inhalation treatment for acute airway obstruction for therapeutic purposes and/or for diagnostic purposes such as sputum induction with an aerosol generator, nebulizer, metered dose inhaler or intermittent positive pressure breathing (IPPB) device",
+                    subcodes: []
+                },
+                "96125": {
+                    description: "Standardized cognitive performance testing (eg, Ross Information Processing Assessment) per hour of a qualified health care professional’s time, both face-to-face time administering tests to the patient and time interpreting these test results and preparing the report",
+                    subcodes: []
+                },
+                "97110": {
+                    description: "Therapeutic procedure, 1 or more areas, each 15 minutes; therapeutic exercises to develop strength and endurance, range of motion and flexibility",
+                    subcodes: []
+                },
+                "98940": {
+                    description: "Chiropractic manipulative treatment (CMT); spinal, 1-2 regions",
+                    subcodes: [
+                        { code: "98941", description: "Chiropractic manipulative treatment (CMT); spinal, 3-4 regions" }
+                    ]
+                },
+                "99203": {
+                    description: "Office or other outpatient visit for the evaluation and management of a new patient, which requires a medically appropriate history and/or examination and low level of medical decision making; 30-44 minutes",
+                    subcodes: []
+                },
+                "99213": {
+                    description: "Office or other outpatient visit for the evaluation and management of an established patient, which requires a medically appropriate history and/or examination and low level of medical decision making; 20-29 minutes",
+                    subcodes: [
+                        { code: "99214", description: "Office or other outpatient visit for the evaluation and management of an established patient, which requires a medically appropriate history and/or examination and moderate level of medical decision making; 30-39 minutes" }
+                    ]
+                },
+                "99223": {
+                    description: "Initial hospital inpatient or observation care, per day, for the evaluation and management of a patient, which requires a medically appropriate history and/or examination and high level of medical decision making; 75 minutes or more",
+                    subcodes: []
+                },
+                "99284": {
+                    description: "Emergency department visit for the evaluation and management of a patient, which requires a medically appropriate history and/or examination and moderate level of medical decision making",
+                    subcodes: []
+                },
+                "99385": {
+                    description: "Initial comprehensive preventive medicine evaluation and management of an individual including an age and gender appropriate history, examination, counseling/anticipatory guidance/risk factor reduction interventions, and the ordering of laboratory/diagnostic procedures, new patient; 18-39 years",
+                    subcodes: []
+                },
+                "99441": {
+                    description: "Telephone evaluation and management service by a physician or other qualified health care professional who may report evaluation and management services provided to an established patient, parent, or guardian not originating from a related E/M service provided within the previous 7 days nor leading to an E/M service or procedure within the next 24 hours or soonest available appointment; 5-10 minutes of medical discussion",
+                    subcodes: []
+                },
+                "0001F": {
+                    description: "Heart failure assessed (includes assessment of all the following components): blood pressure, volume status, heart failure symptoms, heart failure signs (eg, jugular venous distension, rales), and weight (body mass index or weight change) (HF)",
+                    subcodes: []
+                },
+                "0507T": {
+                    description: "Near-infrared dual wavelength spectroscopy for detection of skin cancer, each anatomic site, including surgical pathology examination, with interpretation and report",
+                    subcodes: []
+                }
+            },
+            "ICD-10 PCS": {
+                "0DJ08ZZ": {
+                    description: "Inspection of upper intestinal tract, via natural or artificial opening endoscopic",
+                    subcodes: []
+                },
+                "0SRD0JZ": {
+                    description: "Replacement of left knee joint with synthetic substitute, open approach",
+                    subcodes: []
+                },
+                "0W3C0ZZ": {
+                    description: "Control bleeding in peritoneal cavity, open approach",
+                    subcodes: []
+                },
+                "0V507ZZ": {
+                    description: "Destruction of prostate, via natural or artificial opening",
+                    subcodes: []
+                },
+                "0WJC0ZZ": {
+                    description: "Inspection of peritoneal cavity, open approach",
+                    subcodes: []
+                },
+                "3E0U7GC": {
+                    description: "Introduction of other therapeutic substance into joint, percutaneous approach",
+                    subcodes: []
+                },
+                "4A023FZ": {
+                    description: "Measurement of cardiac rhythm, percutaneous approach",
+                    subcodes: []
+                },
+                "B2111ZZ": {
+                    description: "Fluoroscopy of multiple coronary arteries using low osmolar contrast",
+                    subcodes: []
+                },
+                "F07Z0EZ": {
+                    description: "Range of motion and joint mobility treatment of neurological system",
+                    subcodes: []
+                },
+                "X05133A": {
+                    description: "Destruction of renal sympathetic nerve(s) using radiofrequency ablation, percutaneous approach, new technology group 10",
+                    subcodes: []
+                },
+                "X28F3VA": {
+                    description: "Division of aortic valve using intraluminal bioprosthetic valve leaflet splitting technology in existing valve, percutaneous approach, new technology group 10",
+                    subcodes: []
+                },
+                "X2KA30A": {
+                    description: "Bypass left atrium using conduit through coronary sinus to right atrium, percutaneous approach, new technology group 10",
+                    subcodes: []
+                },
+                "XW0333A": {
+                    description: "Introduction of bentracimab into peripheral vein, percutaneous approach, new technology group 10",
+                    subcodes: []
+                },
+                "XXA536A": {
+                    description: "Circulatory filtration, blood pathogens, percutaneous approach, new technology group 10",
+                    subcodes: []
+                }
+            }
+        };
+
+        const icd10Container = document.getElementById('codes-container');
+        function populateCodes(data) {
+            icd10Container.innerHTML = '';
+            for (const primaryCode in data) {
+                const primaryDiv = document.createElement('div');
+                primaryDiv.classList.add('code', 'primary-code');
+                primaryDiv.textContent = `${primaryCode} - ${data[primaryCode].description}`;
+                primaryDiv.setAttribute('onclick', `toggle('${primaryCode}')`);
+
+                const subcodesDiv = document.createElement('div');
+                subcodesDiv.id = primaryCode;
+                subcodesDiv.classList.add('subcodes');
+
+                if (data[primaryCode].subcodes && Array.isArray(data[primaryCode].subcodes)) {
+                    data[primaryCode].subcodes.forEach(subcode => {
+                        const subcodeDiv = document.createElement('div');
+                        subcodeDiv.textContent = `${subcode.code} - ${subcode.description}`;
+                        subcodesDiv.appendChild(subcodeDiv);
+                    });
+                }
+                icd10Container.appendChild(primaryDiv);
+                icd10Container.appendChild(subcodesDiv);
+            }
+        }
+
+        const cptContainer = document.getElementById('cpt-codes-container');
+        function populateCPTCodes(data) {
+            cptContainer.innerHTML = '';
+            for (const primaryCode in data) {
+                const primaryDiv = document.createElement('div');
+                primaryDiv.classList.add('code', 'primary-code');
+                primaryDiv.textContent = `${primaryCode} - ${data[primaryCode].description}`;
+                primaryDiv.setAttribute('onclick', `toggleCPT('${primaryCode}')`);
+
+                const subcodesDiv = document.createElement('div');
+                subcodesDiv.id = `cpt-${primaryCode}`;
+                subcodesDiv.classList.add('subcodes');
+
+                if (data[primaryCode].subcodes && Array.isArray(data[primaryCode].subcodes)) {
+                    data[primaryCode].subcodes.forEach(subcode => {
+                        const subcodeDiv = document.createElement('div');
+                        subcodeDiv.textContent = `${subcode.code} - ${subcode.description}`;
+                        subcodesDiv.appendChild(subcodeDiv);
+                    });
+                }
+                cptContainer.appendChild(primaryDiv);
+                cptContainer.appendChild(subcodesDiv);
+            }
+        }
+
+        const hcpcsContainer = document.getElementById('hcpcs-codes-container');
+        function populateHCPCSCodes(data) {
+            hcpcsContainer.innerHTML = '';
+            for (const primaryCode in data) {
+                const primaryDiv = document.createElement('div');
+                primaryDiv.classList.add('code', 'primary-code');
+                primaryDiv.textContent = `${primaryCode} - ${data[primaryCode].description}`;
+                primaryDiv.setAttribute('onclick', `toggleHCPCS('${primaryCode}')`);
+
+                const subcodesDiv = document.createElement('div');
+                subcodesDiv.id = `hcpcs-${primaryCode}`;
+                subcodesDiv.classList.add('subcodes');
+
+                if (data[primaryCode].subcodes && Array.isArray(data[primaryCode].subcodes)) {
+                    data[primaryCode].subcodes.forEach(subcode => {
+                        const subcodeDiv = document.createElement('div');
+                        subcodeDiv.textContent = `${subcode.code} - ${subcode.description}`;
+                        subcodesDiv.appendChild(subcodeDiv);
+                    });
+                }
+                hcpcsContainer.appendChild(primaryDiv);
+                hcpcsContainer.appendChild(subcodesDiv);
+            }
+        }
+
+        const icd10pcsContainer = document.getElementById('icd10pcs-codes-container');
+        function populateICD10PCSCodes(data) {
+            icd10pcsContainer.innerHTML = '';
+            for (const primaryCode in data) {
+                const primaryDiv = document.createElement('div');
+                primaryDiv.classList.add('code', 'primary-code');
+                primaryDiv.textContent = `${primaryCode} - ${data[primaryCode].description}`;
+                primaryDiv.setAttribute('onclick', `toggleICD10PCS('${primaryCode}')`);
+
+                const subcodesDiv = document.createElement('div');
+                subcodesDiv.id = `icd10pcs-${primaryCode}`;
+                subcodesDiv.classList.add('subcodes');
+
+                if (data[primaryCode].subcodes && Array.isArray(data[primaryCode].subcodes)) {
+                    data[primaryCode].subcodes.forEach(subcode => {
+                        const subcodeDiv = document.createElement('div');
+                        subcodeDiv.textContent = `${subcode.code} - ${subcode.description}`;
+                        subcodesDiv.appendChild(subcodeDiv);
+                    });
+                }
+                icd10pcsContainer.appendChild(primaryDiv);
+                icd10pcsContainer.appendChild(subcodesDiv);
+            }
+        }
+
+        function toggle(id) {
+            const el = document.getElementById(id);
+            el.style.display = (el.style.display === 'none') ? 'block' : 'none';
+        }
+
+        function toggleCPT(id) {
+            const el = document.getElementById(`cpt-${id}`);
+            el.style.display = (el.style.display === 'none') ? 'block' : 'none';
+        }
+
+        function toggleHCPCS(id) {
+            const el = document.getElementById(`hcpcs-${id}`);
+            el.style.display = (el.style.display === 'none') ? 'block' : 'none';
+        }
+
+        function toggleICD10PCS(id) {
+            const el = document.getElementById(`icd10pcs-${id}`);
+            el.style.display = (el.style.display === 'none') ? 'block' : 'none';
+        }
+
+        function searchCodes() {
+            const query = document.getElementById('icd10-search').value.toLowerCase().trim();
+            const codes = document.querySelectorAll('#codes-container .code');
+            const allSubcodes = document.querySelectorAll('#codes-container .subcodes');
+
+            if (!query) {
+                codes.forEach(code => {
+                    code.style.display = 'block';
+                });
+                allSubcodes.forEach(sub => {
+                    sub.style.display = 'none';
+                    sub.querySelectorAll('div').forEach(div => {
+                        div.classList.remove('hidden');
+                    });
+                });
+                return;
+            }
+
+            codes.forEach(code => {
+                const id = code.getAttribute('onclick').match(/'(.+?)'/)[1];
+                const subDiv = document.getElementById(id);
+                const text = code.textContent.toLowerCase();
+                const matchesPrimary = text.includes(query);
+
+                let matchesSub = false;
+                const subItems = subDiv.querySelectorAll('div');
+                subItems.forEach(div => {
+                    const match = div.textContent.toLowerCase().includes(query);
+                    div.classList.toggle('hidden', !match);
+                    if (match) matchesSub = true;
+                });
+
+                const shouldShow = matchesPrimary || matchesSub;
+                code.style.display = shouldShow ? 'block' : 'none';
+                subDiv.style.display = matchesSub ? 'block' : 'none';
+            });
+        }
+
+        function searchCPTCodes() {
+            const query = document.getElementById('cpt-search').value.toLowerCase().trim();
+            const codes = document.querySelectorAll('#cpt-codes-container .code');
+            const allSubcodes = document.querySelectorAll('#cpt-codes-container .subcodes');
+
+            if (!query) {
+                codes.forEach(code => {
+                    code.style.display = 'block';
+                });
+                allSubcodes.forEach(sub => {
+                    sub.style.display = 'none';
+                    sub.querySelectorAll('div').forEach(div => {
+                        div.classList.remove('hidden');
+                    });
+                });
+                return;
+            }
+
+            codes.forEach(code => {
+                const id = code.getAttribute('onclick').match(/'(.+?)'/)[1];
+                const subDiv = document.getElementById(`cpt-${id}`);
+                const text = code.textContent.toLowerCase();
+                const matchesPrimary = text.includes(query);
+
+                let matchesSub = false;
+                const subItems = subDiv.querySelectorAll('div');
+                subItems.forEach(div => {
+                    const match = div.textContent.toLowerCase().includes(query);
+                    div.classList.toggle('hidden', !match);
+                    if (match) matchesSub = true;
+                });
+
+                const shouldShow = matchesPrimary || matchesSub;
+                code.style.display = shouldShow ? 'block' : 'none';
+                subDiv.style.display = matchesSub ? 'block' : 'none';
+            });
+        }
+
+        function searchHCPCSCodes() {
+            const query = document.getElementById('hcpcs-search').value.toLowerCase().trim();
+            const codes = document.querySelectorAll('#hcpcs-codes-container .code');
+            const allSubcodes = document.querySelectorAll('#hcpcs-codes-container .subcodes');
+
+            if (!query) {
+                codes.forEach(code => {
+                    code.style.display = 'block';
+                });
+                allSubcodes.forEach(sub => {
+                    sub.style.display = 'none';
+                    sub.querySelectorAll('div').forEach(div => {
+                        div.classList.remove('hidden');
+                    });
+                });
+                return;
+            }
+
+            codes.forEach(code => {
+                const id = code.getAttribute('onclick').match(/'(.+?)'/)[1];
+                const subDiv = document.getElementById(`hcpcs-${id}`);
+                const text = code.textContent.toLowerCase();
+                const matchesPrimary = text.includes(query);
+
+                let matchesSub = false;
+                const subItems = subDiv.querySelectorAll('div');
+                subItems.forEach(div => {
+                    const match = div.textContent.toLowerCase().includes(query);
+                    div.classList.toggle('hidden', !match);
+                    if (match) matchesSub = true;
+                });
+
+                const shouldShow = matchesPrimary || matchesSub;
+                code.style.display = shouldShow ? 'block' : 'none';
+                subDiv.style.display = matchesSub ? 'block' : 'none';
+            });
+        }
+
+        function searchICD10PCSCodes() {
+            const query = document.getElementById('icd10pcs-search').value.toLowerCase().trim();
+            const codes = document.querySelectorAll('#icd10pcs-codes-container .code');
+            const allSubcodes = document.querySelectorAll('#icd10pcs-codes-container .subcodes');
+
+            if (!query) {
+                codes.forEach(code => {
+                    code.style.display = 'block';
+                });
+                allSubcodes.forEach(sub => {
+                    sub.style.display = 'none';
+                    sub.querySelectorAll('div').forEach(div => {
+                        div.classList.remove('hidden');
+                    });
+                });
+                return;
+            }
+
+            codes.forEach(code => {
+                const id = code.getAttribute('onclick').match(/'(.+?)'/)[1];
+                const subDiv = document.getElementById(`icd10pcs-${id}`);
+                const text = code.textContent.toLowerCase();
+                const matchesPrimary = text.includes(query);
+
+                let matchesSub = false;
+                const subItems = subDiv.querySelectorAll('div');
+                subItems.forEach(div => {
+                    const match = div.textContent.toLowerCase().includes(query);
+                    div.classList.toggle('hidden', !match);
+                    if (match) matchesSub = true;
+                });
+
+                const shouldShow = matchesPrimary || matchesSub;
+                code.style.display = shouldShow ? 'block' : 'none';
+                subDiv.style.display = matchesSub ? 'block' : 'none';
+            });
+        }
+
+        function clearSearch() {
+            const searchInput = document.getElementById('icd10-search');
+            searchInput.value = '';
+            searchCodes();
+        }
+
+        function clearCPTSearch() {
+            const searchInput = document.getElementById('cpt-search');
+            searchInput.value = '';
+            searchCPTCodes();
+        }
+
+        function clearHCPCSSearch() {
+            const searchInput = document.getElementById('hcpcs-search');
+            searchInput.value = '';
+            searchHCPCSCodes();
+        }
+
+        function clearICD10PCSSearch() {
+            const searchInput = document.getElementById('icd10pcs-search');
+            searchInput.value = '';
+            searchICD10PCSCodes();
+        }
+
+        function handleSearchBlur() {
+            const searchInput = document.getElementById('icd10-search');
+            if (!searchInput.value.trim()) {
+                clearSearch();
+            }
+        }
+
+        function handleCPTSearchBlur() {
+            const searchInput = document.getElementById('cpt-search');
+            if (!searchInput.value.trim()) {
+                clearCPTSearch();
+            }
+        }
+
+        function handleHCPCSSearchBlur() {
+            const searchInput = document.getElementById('hcpcs-search');
+            if (!searchInput.value.trim()) {
+                clearHCPCSSearch();
+            }
+        }
+
+        function handleICD10PCSSearchBlur() {
+            const searchInput = document.getElementById('icd10pcs-search');
+            if (!searchInput.value.trim()) {
+                clearICD10PCSSearch();
+            }
+        }
+
+        function clearMainSearch() {
+            const searchInput = document.getElementById('search');
+            searchInput.value = '';
+            const resultsContainer = document.getElementById('search-results');
+            resultsContainer.innerHTML = '';
+        }
+
+        populateCodes(codeData['ICD-10 CM']);
+        populateCPTCodes(codeData['CPT']);
+        populateHCPCSCodes(codeData['HCPCS']);
+        populateICD10PCSCodes(codeData['ICD-10 PCS']);
+
+        const resultsContainer = document.getElementById('search-results');
+        function searchAllCodes() {
+            const query = document.getElementById('search').value.toLowerCase().trim();
+            resultsContainer.innerHTML = '';
+
+            if (!query) {
+                return;
+            }
+
+            for (const system in codeData) {
+                const systemData = codeData[system];
+                let hasMatches = false;
+                const systemSection = document.createElement('div');
+                systemSection.classList.add('system-section');
+                const systemHeader = document.createElement('h3');
+                systemHeader.textContent = `${system} Results`;
+                systemSection.appendChild(systemHeader);
+
+                for (const primaryCode in systemData) {
+                    const primaryText = `${primaryCode} - ${systemData[primaryCode].description}`.toLowerCase();
+                    let matchesPrimary = primaryText.includes(query);
+                    let matchingSubcodes = [];
+
+                    if (systemData[primaryCode].subcodes && Array.isArray(systemData[primaryCode].subcodes)) {
+                        matchingSubcodes = systemData[primaryCode].subcodes.filter(subcode =>
+                            `${subcode.code} - ${subcode.description}`.toLowerCase().includes(query)
+                        );
+                        if (matchingSubcodes.length > 0) matchesPrimary = true;
+                    }
+
+                    if (matchesPrimary) {
+                        hasMatches = true;
+                        const primaryDiv = document.createElement('div');
+                        primaryDiv.classList.add('code', 'primary-code');
+                        primaryDiv.textContent = `${primaryCode} - ${systemData[primaryCode].description}`;
+                        primaryDiv.setAttribute('onclick', `toggle('${system}-${primaryCode}')`);
+
+                        const subcodesDiv = document.createElement('div');
+                        subcodesDiv.id = `${system}-${primaryCode}`;
+                        subcodesDiv.classList.add('subcodes');
+
+                        if (matchingSubcodes.length > 0) {
+                            matchingSubcodes.forEach(subcode => {
+                                const subcodeDiv = document.createElement('div');
+                                subcodeDiv.textContent = `${subcode.code} - ${subcode.description}`;
+                                subcodesDiv.appendChild(subcodeDiv);
+                            });
+                        }
+
+                        systemSection.appendChild(primaryDiv);
+                        systemSection.appendChild(subcodesDiv);
+                    }
+                }
+
+                if (hasMatches) {
+                    resultsContainer.appendChild(systemSection);
+                }
+            }
+
+            if (resultsContainer.innerHTML === '') {
+                resultsContainer.innerHTML = '<p>No results found.</p>';
+            }
+        }
+    </script>
+</body>
+</html>
